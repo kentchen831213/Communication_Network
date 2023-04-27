@@ -34,7 +34,6 @@ struct thread_packet{
 
 struct Packet {
     int seq;
-    // uint32_t length;
     char data[BUFFER_SIZE];
 };
 
@@ -72,7 +71,7 @@ void reliablyReceive(unsigned short int myUDPport, char* destinationFile) {
     if (bind(s, (struct sockaddr*) &server_addr, sizeof (server_addr)) == -1)
         diep("bind");
 
-	/* Now receive data and send acknowledgements */    
+    /* Now receive data and send acknowledgements */    
     while(1){
         if(recvdata = recvfrom(s,&window, sizeof(Packet),0, (sockaddr*) &client_addr, &addrlen)>0){
             strcpy(buf,window.data);
