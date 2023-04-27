@@ -78,8 +78,8 @@ void gbn(int sock_fd, FILE * fp, struct sockaddr_in servaddr, int window_size, u
             gettimeofday(&tt, NULL);
             uint64_t cur_time = tt.tv_sec*1000+tt.tv_usec/1000;
             uint64_t start_time = timer.begin()->second;
-            // std::cout<<"enter11"<<endl;
-            // if time out, resend remaining packets
+
+	    // if time out, resend remaining packets
             if(cur_time-start_time>TIMEOUT){
                 std::cout<<"cur_time"<<cur_time<<endl;
                 std::cout<<"start_time"<<start_time<<endl;
@@ -120,6 +120,7 @@ void gbn(int sock_fd, FILE * fp, struct sockaddr_in servaddr, int window_size, u
             memset(receive_buf,0, sizeof(receive_buf));
             // sleep(1);
         }
+	    
         /*clean the window buffer*/
         for(int i = 0; i<window_size;i++)
             memset(windows[i].data,0, sizeof(windows[i].data));
@@ -154,6 +155,7 @@ void gbn(int sock_fd, FILE * fp, struct sockaddr_in servaddr, int window_size, u
 }
 
 void reliablyTransfer(char* hostname, unsigned short int hostUDPport, char* filename, unsigned long long int bytesToTransfer) {
+    
     //Open the file
     FILE *fp;
     fp = fopen(filename, "rb");
@@ -175,12 +177,11 @@ void reliablyTransfer(char* hostname, unsigned short int hostUDPport, char* file
         exit(1);
     }
 
-    // setting timout
-    // tv.tv_sec = TIMEOUT;
+
     tv.tv_usec = 20;
     setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(struct timeval));
 
-	/* Send data and receive acknowledgements on s*/
+    /* Send data and receive acknowledgements on s*/
     gbn(s, fp, si_other, CWND, bytesToTransfer);
 
     printf("Closing the socket\n");
