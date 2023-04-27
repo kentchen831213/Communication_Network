@@ -51,13 +51,13 @@ int main(int argc, char *argv[])
 	string str = string(argv[1]);
 	int idx_begin = str.find("//");
 	int idx_before_port = str.find(":",5)+1;
-    int idx_end_port = str.find("/", idx_before_port);
-    string ip = str.substr(idx_begin+2, idx_before_port-idx_begin-3);
-    string port = str.substr(idx_before_port, idx_end_port-idx_before_port);
-    string file_name = str.substr(idx_end_port);
-    string request = "GET " + file_name + " HTTP/1.1\r\n\r\n";
+        int idx_end_port = str.find("/", idx_before_port);
+        string ip = str.substr(idx_begin+2, idx_before_port-idx_begin-3);
+        string port = str.substr(idx_before_port, idx_end_port-idx_before_port);
+        string file_name = str.substr(idx_end_port);
+        string request = "GET " + file_name + " HTTP/1.1\r\n\r\n";
 	cout<<"url"<<ip<<"\n"<<endl;
-		//<<"port"<<port;
+
 	strcpy(buffer,request.c_str());
 
 	if ((rv = getaddrinfo(ip.c_str(), port.c_str(), &hints, &servinfo)) != 0) {
